@@ -6,8 +6,7 @@ exports.UserList = function(req, res) {
         id = (req.params.id != 0) ? req.params.id : null;
         models.User.findOne({ '_id': id }, function (err, doc) {
             if(err) {
-                console.log(err);
-                res.send({success: false, data: err});
+                res.send({success: false, message: err.message});
                 return;
             }
             res.send({success: true, data: doc});
@@ -19,9 +18,9 @@ exports.UserList = function(req, res) {
     models.User.count({}, function(err, count) {
         counts = count;
     });
-    models.User.find({}).sort({id: 1}).skip(req.query.start).limit(req.query.limit).exec(function(err, docs) {
+    models.User.find({}).sort({id: 1}).skip(parseInt(req.query.start)).limit(parseInt(req.query.limit)).exec(function(err, docs) {
         if(err) {
-            res.send({success: false, data: 'failure'});
+            res.send({success: false, message: err.message});
             return;
         }
         res.send({success: true, data: docs, total: counts});

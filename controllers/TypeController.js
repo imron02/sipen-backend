@@ -17,16 +17,17 @@ exports.TypeList = function(req, res) {
     // paging
     models.Type.count({}, function(err, count) {
         if(err) {
-            res.send({success: false, data: err});
+            res.send({success: false, message: err.message});
             return;
         }
         counts = count;
     });
-    models.Type.find({}).sort({id: 1}).skip(req.query.start).limit(req.query.limit).exec(function(err, docs) {
+    models.Type.find({}).sort({id: 1}).skip(parseInt(req.query.start)).limit(parseInt(req.query.limit)).exec(function(err, docs) {
         if(err) {
-            res.send({success: false, data: 'failure'});
+            res.send({success: false, message: err.message});
             return;
         }
+        console.log(docs);
         res.send({success: true, data: docs, total: counts});
     });
     return;

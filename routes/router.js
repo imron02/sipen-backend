@@ -14,4 +14,6 @@ module.exports = function (app) {
     app.get('/items/:id?', require('../controllers/ItemController').ItemList);
     app.post('/items', require('../controllers/ItemController').ItemSave);
     app.delete('/items/:id', require('../controllers/ItemController').ItemDestroy);
+
+    app.get('/supplier/:id?', require('../controllers/SupplierController').SupplierList);
 };

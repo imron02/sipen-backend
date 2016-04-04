@@ -27,7 +27,6 @@ exports.TypeList = function(req, res) {
             res.send({success: false, message: err.message});
             return;
         }
-        console.log(docs);
         res.send({success: true, data: docs, total: counts});
     });
     return;

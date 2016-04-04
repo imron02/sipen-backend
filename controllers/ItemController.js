@@ -33,7 +33,6 @@ exports.ItemList = function(req, res) {
                 res.send({success: false, message: 'failure'});
                 return;
             }
-            console.log(docs);
             res.send({success: true, data: docs, total: counts});
         });
     };

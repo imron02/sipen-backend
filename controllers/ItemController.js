@@ -53,7 +53,7 @@ exports.ItemSave = function(req, res, next) {
             item_status: req.body.item_status,
             item_description: req.body.item_description
         }, {}, function(err, counter)   {
-            if(error) {
+            if(err) {
                 res.send({success: false, message: err.message});
                 return;
             }

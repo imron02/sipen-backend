@@ -37,9 +37,9 @@ exports.UserSave = function(req, res, next) {
             user_telp: req.body.user_telp,
             user_address: req.body.user_address,
             user_role: req.body.user_role
-        }, {}, function(error, counter)   {
-            if(error) {
-                res.send({success: false, data: 'failure'});
+        }, {}, function(err, counter) {
+            if(err) {
+                res.send({success: false, message: err.message});
                 return;
             }
             res.send({success: true, data: 'Success add data'});
@@ -59,7 +59,7 @@ exports.UserSave = function(req, res, next) {
 
     user.save(function(err) {
         if (err) {
-            res.send({success: false, data: 'failure'});
+            res.send({success: false, message: err.message});
             return;
         }
         res.send({success: true, data: 'Success add data'});
@@ -70,7 +70,7 @@ exports.UserDestroy = function(req, res) {
     var json = JSON.parse(req.body.data);
     models.User.findByIdAndRemove(json[0]._id, function(err, numRemoved) {
         if(err) {
-            res.send({success: false, data: err});
+            res.send({success: false, message: err.message});
             return;
         }
         res.send({success: true, data: 'Success remove data'});

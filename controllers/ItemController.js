@@ -8,8 +8,7 @@ exports.ItemList = function(req, res) {
         id = (req.params.id != 0) ? req.params.id : null;
         models.Item.findOne({ '_id': id }, function (err, doc) {
             if(err) {
-                console.log(err);
-                res.send({success: false, message: err});
+                res.send({success: false, message: err.message});
                 return;
             }
             res.send({success: true, data: doc});
@@ -53,9 +52,9 @@ exports.ItemSave = function(req, res, next) {
             type_id: req.body.type,
             item_status: req.body.item_status,
             item_description: req.body.item_description
-        }, {}, function(error, counter)   {
+        }, {}, function(err, counter)   {
             if(error) {
-                res.send({success: false, message: 'failure'});
+                res.send({success: false, message: err.message});
                 return;
             }
             res.send({success: true, data: 'Success add data'});
@@ -75,7 +74,7 @@ exports.ItemSave = function(req, res, next) {
 
     item.save(function(err) {
         if (err) {
-            res.send({success: false, message: 'failure'});
+            res.send({success: false, message: err.message});
             return;
         }
         res.send({success: true, data: 'Success add data'});
@@ -86,7 +85,7 @@ exports.ItemDestroy = function(req, res) {
     var json = JSON.parse(req.body.data);
     models.Item.findByIdAndRemove(json[0]._id, function(err, numRemoved) {
         if(err) {
-            res.send({success: false, message: err});
+            res.send({success: false, message: err.message});
             return;
         }
         res.send({success: true, data: 'Success remove data'});

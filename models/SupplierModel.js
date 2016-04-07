@@ -1,7 +1,7 @@
 var Schema = mongoose.Schema;
 
 var supplierSchema = new Schema({
-	supplier_name: { type: String, required: true, trim: true },
+	supplier_code: { type: String, required: true, trim: true },
 	supplier_company: { type: String, required: true, trim: true },
 	supplier_contact: { type: String, required: true, trim: true },
 	supplier_address: { type: String }

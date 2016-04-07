@@ -9,7 +9,7 @@ exports.ItemList = function(req, res) {
         models.Item.findOne({ '_id': id }, function (err, doc) {
             if(err) {
                 console.log(err);
-                res.send({success: false, data: err});
+                res.send({success: false, message: err});
                 return;
             }
             res.send({success: true, data: doc});
@@ -29,8 +29,7 @@ exports.ItemList = function(req, res) {
                 }
         }).sort({id: 1}).skip(parseInt(req.query.start)).limit(parseInt(req.query.limit)).exec(function(err, docs) {
             if(err) {
-                console.log(err.message);
-                res.send({success: false, message: 'failure'});
+                res.send({success: false, message: err.message});
                 return;
             }
             res.send({success: true, data: docs, total: counts});
@@ -56,7 +55,7 @@ exports.ItemSave = function(req, res, next) {
             item_description: req.body.item_description
         }, {}, function(error, counter)   {
             if(error) {
-                res.send({success: false, data: 'failure'});
+                res.send({success: false, message: 'failure'});
                 return;
             }
             res.send({success: true, data: 'Success add data'});
@@ -76,7 +75,7 @@ exports.ItemSave = function(req, res, next) {
 
     item.save(function(err) {
         if (err) {
-            res.send({success: false, data: 'failure'});
+            res.send({success: false, message: 'failure'});
             return;
         }
         res.send({success: true, data: 'Success add data'});
@@ -87,7 +86,7 @@ exports.ItemDestroy = function(req, res) {
     var json = JSON.parse(req.body.data);
     models.Item.findByIdAndRemove(json[0]._id, function(err, numRemoved) {
         if(err) {
-            res.send({success: false, data: err});
+            res.send({success: false, message: err});
             return;
         }
         res.send({success: true, data: 'Success remove data'});

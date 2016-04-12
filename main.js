@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var nomo = require('node-monkey').start();
-mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
 var expressApp = express();
 
@@ -45,6 +45,14 @@ var server = expressApp.listen(3000, function () {
     var port = server.address().port;
 
     console.log('Example app listening at http://%s:%s', host, port);
+});
+
+// If the Node process ends, close the Mongoose connection
+process.on('SIGINT', function() {
+    mongoose.connection.close(function () {
+        console.log('Mongoose default connection disconnected through app termination'); 
+        process.exit(0);
+    });
 });
 
 // electron

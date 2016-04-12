@@ -27,7 +27,7 @@ exports.SuppliersList = function (req, res) {
 
 	models.Supplier.count({}, function (err, counts) {
 		if (err) {
-			res.send({ success: false, data: err.message });
+			res.send({ success: false, message: err.message });
 			return;
 		}
 		paging(counts);
@@ -74,7 +74,7 @@ exports.SupplierDestroy = function (req, res) {
 	var json = JSON.parse(req.body.data);
 	models.Supplier.findByIdAndRemove(json[0]._id, function (err, numRemoved) {
 		if (err) {
-			res.send({ success: false, data: err.message });
+			res.send({ success: false, message: err.message });
 			return;
 		}
 		res.send({ success: true, data: 'Success remove data' });

@@ -15,15 +15,21 @@ exports.UserList = function(req, res) {
     }
 
     // paging
-    models.User.count({}, function(err, count) {
-        counts = count;
-    });
-    models.User.find({}).sort({id: 1}).skip(parseInt(req.query.start)).limit(parseInt(req.query.limit)).exec(function(err, docs) {
+    var paging = function(counts) {
+        models.User.find({}).sort({id: 1}).skip(parseInt(req.query.start)).limit(parseInt(req.query.limit)).exec(function(err, docs) {
+            if(err) {
+                res.send({success: false, message: err.message});
+                return;
+            }
+            res.send({success: true, data: docs, total: counts});
+        });
+    }
+    models.User.count({}, function(err, counts) {
         if(err) {
-            res.send({success: false, message: err.message});
+            res.send({ success: false, message: err.message });
             return;
         }
-        res.send({success: true, data: docs, total: counts});
+        paging(counts);
     });
     return;
 };

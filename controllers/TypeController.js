@@ -15,21 +15,23 @@ exports.TypeList = function(req, res) {
     }
 
     // paging
-    models.Type.count({}, function(err, count) {
+    var paging = function(counts) {
+        models.Type.find({}).sort({id: 1}).skip(parseInt(req.query.start)).limit(parseInt(req.query.limit)).exec(function(err, docs) {
+            if(err) {
+                res.send({success: false, message: err.message});
+                return;
+            }
+            res.send({success: true, data: docs, total: counts});
+        });
+    }
+
+    models.Type.count({}, function(err, counts) {
         if(err) {
             res.send({success: false, message: err.message});
             return;
         }
-        counts = count;
+        paging(counts);
     });
-    models.Type.find({}).sort({id: 1}).skip(parseInt(req.query.start)).limit(parseInt(req.query.limit)).exec(function(err, docs) {
-        if(err) {
-            res.send({success: false, message: err.message});
-            return;
-        }
-        res.send({success: true, data: docs, total: counts});
-    });
-    return;
 };
 
 exports.TypeSave = function(req, res, next) {
@@ -38,8 +40,8 @@ exports.TypeSave = function(req, res, next) {
         models.Type.findByIdAndUpdate(req.body._id, {
             type_name: req.body.type_name
         }, {}, function(error, counter)   {
-            if(error) {
-                res.send({success: false, data: 'failure'});
+            if(err) {
+                res.send({success: false, message: err.message});
                 return;
             }
             res.send({success: true, data: 'Success add data'});
@@ -54,7 +56,7 @@ exports.TypeSave = function(req, res, next) {
 
     type.save(function(err) {
         if (err) {
-            res.send({success: false, data: 'failure'});
+            res.send({success: false, message: err.message});
             return;
         }
         res.send({success: true, data: 'Success add data'});
@@ -65,7 +67,7 @@ exports.TypeDestroy = function(req, res) {
     var json = JSON.parse(req.body.data);
     models.Type.findByIdAndRemove(json[0]._id, function(err, numRemoved) {
         if(err) {
-            res.send({success: false, data: err});
+            res.send({success: false, message: err.message});
             return;
         }
         res.send({success: true, data: 'Success remove data'});
